@@ -1,25 +1,32 @@
 import React from 'react';
-import logo from './logo.svg';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import Header from './components/Header'
+import { Route, Switch, HashRouter } from 'react-router-dom'
+
+const loading = (
+  <div>
+    <h2>Loading ...</h2>
+  </div>
+)
+
+
+// Pages 
+const Login = React.lazy(() => import('./components/pages/Login'))
+const Register = React.lazy(() => import('./components/pages/Register'))
+const Dashboard = React.lazy(() => import('./components/pages/Dashboard'))
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <HashRouter>
+      <React.Suspense fallback={loading}>
+        <Switch>
+          <Route exact path="/login" name="Login Page" render={props => <Login {...props} />} />
+          <Route exact path="/register" name="Register Page" render={props => <Register {...props} />} />
+          <Route path="/" name="Home" render={props => <Dashboard {...props} />} />
+        </Switch>
+      </React.Suspense>
+    </HashRouter>
   );
 }
 
